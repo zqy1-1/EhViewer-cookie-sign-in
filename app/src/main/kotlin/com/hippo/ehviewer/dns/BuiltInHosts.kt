@@ -8,9 +8,10 @@ import java.net.InetAddress
  *
  * These are the real addresses as returned by DoH (doh.pub / 1.12.12.12) and
  * they match the table EhViewer_CN_SXJ ships. They go stale as the CDN
- * rotates -- that is why DNS-over-HTTPS is tried first when enabled, and why
- * this table is only a fallback. Update it by resolving the names over a
- * working DoH endpoint.
+ * rotates, and because this table is consulted before DNS-over-HTTPS a stale
+ * entry is not healed automatically -- a dead address here fails the request
+ * even when DoH would answer correctly. Refresh a host by resolving it over a
+ * working DoH endpoint and checking the results accept a TLS handshake.
  */
 object BuiltInHosts {
     private val table: Map<String, List<String>> = mapOf(
@@ -41,10 +42,14 @@ object BuiltInHosts {
             "37.48.81.204",
             "5.79.104.110",
         ),
+        // Image host. The previous trio (89.39.106.43 / 109.236.85.28 /
+        // 62.112.8.21) stopped completing a TLS handshake; these are the
+        // addresses doh.pub answers with as of 2026-10-26 and each one was
+        // checked to handshake on 443.
         "ehgt.org" to listOf(
-            "89.39.106.43",
-            "109.236.85.28",
-            "62.112.8.21",
+            "62.112.8.152",
+            "185.132.132.76",
+            "185.132.132.79",
         ),
         "s.exhentai.org" to listOf(
             "178.175.132.22",
