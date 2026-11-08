@@ -36,7 +36,7 @@ fun OkHttpConfig.configureClient() {
  * The platform default X509TrustManager, required by the non-deprecated
  * OkHttp sslSocketFactory overload. Certificate validation is unchanged.
  */
-private fun platformTrustManager(): X509TrustManager {
+internal fun platformTrustManager(): X509TrustManager {
     val factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
     factory.init(null as KeyStore?)
     return factory.trustManagers.filterIsInstance<X509TrustManager>().first()
