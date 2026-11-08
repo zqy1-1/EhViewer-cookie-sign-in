@@ -75,11 +75,6 @@ class PoisonProofWebViewClient(
             return null
         }
         val body = response.body
-        if (body == null) {
-            response.close()
-            return null
-        }
-
         for (setCookie in response.headers.values("Set-Cookie")) {
             runCatching { CookieManager.getInstance().setCookie(url.toString(), setCookie) }
         }
